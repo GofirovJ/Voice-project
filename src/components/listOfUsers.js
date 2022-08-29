@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ListOfUsers = ({setModal}) => {
+const ListOfUsers = ({setModal, setLoader}) => {
     const users = [
         {
           id: 1,
@@ -52,6 +52,7 @@ const ListOfUsers = ({setModal}) => {
         },
       ];
     const openModal = () =>{
+        setLoader(true)
         setModal(true)
       }
   return (

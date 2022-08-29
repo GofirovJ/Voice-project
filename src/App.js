@@ -6,6 +6,7 @@ import Modal from "./components/modal";
 import Navbar from "./components/navbar";
 function App() {
   const [modal, setModal] = useState(false);
+   const [loader, setLoader] = useState(false);
   // const func = async () => {
   //   await axios
   //     .get("http://192.168.4.162/v1/users")
@@ -22,11 +23,11 @@ function App() {
     <>
     <div className="h-[100vh]">
       <Navbar />
-      <ListOfUsers setModal={setModal} />
+      <ListOfUsers setModal={setModal} setLoader={setLoader} />
     </div>
       {modal ?
         (
-         <Modal setModal={setModal}  />
+         <Modal setModal={setModal} loader={loader} setLoader = {setLoader}  />
         )
       :null}
     </>
