@@ -50,7 +50,7 @@ const Modal = ({ setModal }) => {
   useEffect(() => {
     // console.log("useEffect");
     disableBtns()
-  }, []);
+  }, [disableBtns]);
 
   return (
     <>

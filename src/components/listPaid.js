@@ -18,7 +18,7 @@ const PaidUsers = () => {
           .catch((error) => {
             return error;
           });
-      }, []);
+      }, [dispatch]);
   return (
     <>
     <div className="w-[85%] h-full bg-[#F7F9FB] p-20">

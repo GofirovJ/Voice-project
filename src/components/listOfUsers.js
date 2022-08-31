@@ -61,7 +61,7 @@ const ListOfUsers = ({ setModal, setLoader, }) => {
       .catch((error) => {
         return error;
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <> 
