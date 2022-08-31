@@ -50,7 +50,8 @@ const Modal = ({ setModal }) => {
   useEffect(() => {
     // console.log("useEffect");
     disableBtns()
-  }, [disableBtns]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
