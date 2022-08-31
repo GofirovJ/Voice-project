@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { code_of_user } from "../store/action";
 const Modal = ({ setModal }) => {
-  const [disableUnSubmit, setDisableUnSubmit] = useState(false);
-  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);

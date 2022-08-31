@@ -3,7 +3,7 @@ import ListPaid from "../components/listPaid";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 
-const VerifiedUsers = () => {
+const PaidUsers = () => {
   return (
     <>
       <div className="h-[100vh]">
@@ -17,4 +17,4 @@ const VerifiedUsers = () => {
   );
 };
 
-export default VerifiedUsers;
+export default PaidUsers;

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { get_projects } from "../store/action";
-import axios from "axios";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+// import { get_projects } from "../store/action";
+// import axios from "axios";
 
-const baseURL = "https://open-budget1.herokuapp.com";
+// const baseURL = "https://open-budget1.herokuapp.com";
 const Listverified = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState("");
@@ -24,6 +24,7 @@ const Listverified = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(title);
     // axios
     //   .post(
     //     `${baseURL}/v1/projects`,

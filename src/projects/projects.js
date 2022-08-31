@@ -3,7 +3,7 @@ import ListProject from "../components/listproject";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 
-const VerifiedUsers = () => {
+const Projects = () => {
   return (
     <>
       <div className="h-[100vh]">
@@ -17,4 +17,4 @@ const VerifiedUsers = () => {
   );
 };
 
-export default VerifiedUsers;
+export default Projects;

@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { get_all_user, code_of_user } from "../store/action";
 import axios from "axios";
@@ -23,7 +23,7 @@ const ListOfUsers = ({ setModal, setLoader, }) => {
     const getCode = async () => {
       await axios.get(`${baseURL}/v1/users/${userId}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res?.data?.object?.code !== null) {
           // console.log("code found");
           dispatch(code_of_user(res.data.object.code));
@@ -32,8 +32,8 @@ const ListOfUsers = ({ setModal, setLoader, }) => {
         } else {
           // console.log("Code not found", res?.data.object.code);
           num++;
-          console.log(num);
-          if (num === 5) {
+          // console.log(num);
+          if (num === 9) {
             clearInterval(interval)
             dispatch(code_of_user('Request failed try again !'));
             // console.log("cleared");
