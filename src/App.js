@@ -1,36 +1,20 @@
-// import { useEffect } from "react";
-import axios from "axios";
-import { useState } from "react";
-import ListOfUsers from "./components/listOfUsers";
-import Modal from "./components/modal";
-import Navbar from "./components/navbar";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './home/home';
+import PaidUsers from './paid/paid';
+import VerifiedUsers from './verified/verified';
+import Projects from './projects/projects'
+
 function App() {
-  const [modal, setModal] = useState(false);
-   const [loader, setLoader] = useState(false);
-  // const func = async () => {
-  //   await axios
-  //     .get("http://192.168.4.162/v1/users")
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-  // func();
- 
+  
   return (
-    <>
-    <div className="h-[100vh]">
-      <Navbar />
-      <ListOfUsers setModal={setModal} setLoader={setLoader} />
-    </div>
-      {modal ?
-        (
-         <Modal setModal={setModal} loader={loader} setLoader = {setLoader}  />
-        )
-      :null}
-    </>
+    <BrowserRouter>
+    <Routes>
+      <Route path = '/' element={<Home />} />  
+      <Route path = '/verified_users' element={<VerifiedUsers />} />  
+      <Route path = '/paid_users' element={<PaidUsers />} />    
+      <Route path = '/projects' element={<Projects />} />    
+    </Routes>
+  </BrowserRouter>
   );
 }
 
