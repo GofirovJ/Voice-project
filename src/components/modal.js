@@ -1,57 +1,141 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { code_of_user } from "../store/action";
-const Modal = ({ setModal }) => {
+import { code_of_user, phone_of_user, get_all_user } from "../store/action";
+import axios from "axios";
+const baseURL = "https://open-budget-pro.herokuapp.com";
 
+const Modal = ({ setModal }) => {
+  let num = 0;
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const refreshUsers = () => {
+    axios
+      .get(`${baseURL}/v1/users/new_users`)
+      .then((response) => {
+        // console.log("new users",response);
+        // console.log(response.data.object);
+        dispatch(get_all_user(response.data));
+      })
+      .catch((error) => {
+        return error;
+      });
+  };
 
   const closeModal = () => {
     dispatch(code_of_user(""));
     setModal(false);
-  };
-  
-  const verifiedCode = () => {
-    console.log("verify");
+    refreshUsers();
   };
 
-  const errorCode = () => {
+  const verifiedCode = () => {
+    let phoneNumber = state?.phoneNumber;
+    // console.log("verify");
+    axios
+      .post(`${baseURL}/v1/users/verify/${phoneNumber}`)
+      .then((response) => {
+        // console.log("verify post",response);
+        setModal(false);
+        dispatch(phone_of_user(phoneNumber));
+      })
+      .catch((err) => {
+        return err;
+      });
+    refreshUsers();
+  };
+  const resendCode = () => {
+    state.code = "";
     // unsubmitted notification should be sent
-    console.log("error");
+    // console.log("resend");
+    let phoneNumber = state?.phoneNumber;
+    console.log("verify");
+    axios
+      .post(`${baseURL}/v1/users/resend_code/${phoneNumber}`)
+      .then((response) => {
+        // console.log("resend code", response);
+        // setModal(false);
+        dispatch(phone_of_user(phoneNumber));
+      })
+      .catch((err) => {
+        return err;
+      });
+
+    let userId = state?.userId;
+    const getCode = async () => {
+      await axios
+        .get(`${baseURL}/v1/users/${userId}`)
+        .then((res) => {
+          // console.log("user's details",res);
+          if (res?.data?.object?.code !== null) {
+            // console.log("code found");
+            dispatch(code_of_user(res.data.object.code));
+            clearInterval(interval);
+          } else {
+            // console.log("Code not found", res?.data.object.code);
+            num++;
+            // console.log(num);
+            if (num === 9) {
+              clearInterval(interval);
+              dispatch(code_of_user("Request failed try again !"));
+              // console.log("cleared");
+            }
+          }
+        })
+        .catch((error) => {
+          return error;
+        });
+    };
+
+    var interval = setInterval(() => {
+      getCode();
+    }, 10000);
   };
   const failedCode = () => {
     // unsubmitted notification should be sent
-    console.log("failed");
+    // console.log("failed");
+    let phoneNumber = state?.phoneNumber;
+    console.log("verify");
+    axios
+      .post(`${baseURL}/v1/users/code_not_received/${phoneNumber}`)
+      .then((response) => {
+        // console.log("failed request post",response);
+        setModal(false);
+        dispatch(phone_of_user(phoneNumber));
+      })
+      .catch((err) => {
+        return err;
+      });
+    refreshUsers();
   };
 
-  const disableBtns = () => {
-    const submitBtn = document.querySelector(".submitBtn");
-    const unSubmitBtn = document.querySelector(".unSubmitBtn");
-    const failedBtn = document.querySelector(".failedBtn");
-    const closeBtn = document.querySelector(".closeButton");
+  // const disableBtns = () => {
+  //   const submitBtn = document.querySelector(".submitBtn");
+  //   const unSubmitBtn = document.querySelector(".unSubmitBtn");
+  //   const failedBtn = document.querySelector(".failedBtn");
+  //   const closeBtn = document.querySelector(".closeButton");
 
-    if (state?.code.length > 0) {
-      submitBtn.disabled = false;
-      unSubmitBtn.disabled = false;
-      failedBtn.disabled = false;
-      closeBtn.disabled = false;
-    } else {
-      submitBtn.disabled = true;
-      unSubmitBtn.disabled = true;
-      failedBtn.disabled = true;
-      closeBtn.disabled = true;
-    }
-  }
+  //   if (state?.code.length > 0) {
+  //     submitBtn.disabled = false;
+  //     unSubmitBtn.disabled = false;
+  //     failedBtn.disabled = false;
+  //     closeBtn.disabled = false;
+  //   } else {
+  //     submitBtn.disabled = true;
+  //     unSubmitBtn.disabled = true;
+  //     failedBtn.disabled = true;
+  //     closeBtn.disabled = true;
+  //   }
+  // }
 
-  if (state?.code.length > 0) {
-  disableBtns()    
-  }
+  // if (state?.code.length > 0) {
+  // disableBtns()
+  // }
 
-  useEffect(() => {
-    // console.log("useEffect");
-    disableBtns()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   // console.log("useEffect");
+  //   disableBtns()
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
@@ -64,9 +148,7 @@ const Modal = ({ setModal }) => {
           <div className="absolute right-1 top-3">
             <button
               onClick={closeModal}
-              className={`${
-                state?.code.length > 0 ? `` : `cursor-not-allowed`
-              } closeButton cursor-pointer w-[35px] h-[35px] bg-transparent relative mx-4 p-0 overflow-hidden text-[0] close`}
+              className={`closeButton cursor-pointer w-[35px] h-[35px] bg-transparent relative mx-4 p-0 overflow-hidden text-[0] close`}
             >
               <span className="absolute block bg-white w-[30px] h-[3px] top-[16px] left-[2px] right-[2px] rounded-[2px]">
                 close button
@@ -130,28 +212,23 @@ const Modal = ({ setModal }) => {
               <div className=" h-[50%] w-full flex justify-around items-center">
                 <button
                   onClick={verifiedCode}
-                  className={`${
-                    state?.code.length > 0 ? `` : `cursor-not-allowed`
-                  } submitBtn px-6 py-2 bg-[#42c07d] text-white cursor-pointer rounded-md`}
+                  className={`submitBtn px-6 py-2 bg-[#42c07d] text-white cursor-pointer rounded-md`}
                 >
                   Verified
                 </button>
                 <button
-                  onClick={errorCode}
-                  className={`${
-                    state?.code.length > 0 ? `` : `cursor-not-allowed`
-                  } unSubmitBtn px-4 py-2 bg-[#c3cc42] text-white cursor-pointer rounded-md`}
+                  onClick={resendCode}
+                  className={`unSubmitBtn px-4 py-2 bg-[#c3cc42] text-white cursor-pointer rounded-md`}
                 >
-                  Error Code
+                  Resend Code
                 </button>
                 <button
-                onClick={failedCode}
-                  className={`${
-                    state?.code.length > 0 ? `` : `cursor-not-allowed`
-                  } failedBtn px-4 py-2 bg-[#cc4242] text-white cursor-pointer rounded-md`}
+                  onClick={failedCode}
+                  className={`failedBtn px-4 py-2 bg-[#cc4242] text-white cursor-pointer rounded-md`}
                 >
                   Request failed
                 </button>
+                {/* ${state?.code.length > 0 ? `` : `cursor-not-allowed`}  */}
               </div>
             </div>
           </div>

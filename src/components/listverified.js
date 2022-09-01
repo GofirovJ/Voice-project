@@ -3,22 +3,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_verified_user } from "../store/action";
 import axios from "axios";
 
-const baseURL = "https://open-budget1.herokuapp.com";
+const baseURL = "https://open-budget-pro.herokuapp.com";
 const Listverified = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  useEffect(() => {
+  const getVerifiedUsers = () => {
     axios
       .get(`${baseURL}/v1/users/verified_users`)
       .then((response) => {
-        // console.log(response.data.object);
-        dispatch(get_verified_user(response.data));
+        // console.log("verified users", response);
+
+        dispatch(get_verified_user(response.data.object));
       })
       .catch((error) => {
         return error;
       });
-  }, [dispatch]);
+  };
+  const payForUser = (phoneNumber) => {
+    axios
+      .post(`${baseURL}/v1/users/user_is_paid/${phoneNumber}`)
+      .then((response) => {
+        // console.log("paying", response);
+      })
+      .catch((err) => {
+        return err;
+      });
+
+    getVerifiedUsers();
+  };
+
+  useEffect(() => {
+    getVerifiedUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
@@ -31,9 +50,9 @@ const Listverified = () => {
             <li className="w-[20%]">Phone Number:</li>
             <li className="w-[20%]">Date:</li>
             <li className="w-[20%]">Project title:</li>
-            <li className="w-[10%]">Status</li>
+            <li className="w-[10%]">Payment</li>
           </ul>
-          {state?.verifiedUsers?.object?.map((user) => {
+          {state?.verifiedUsers?.map((user) => {
             return (
               <ul
                 key={user.id}
@@ -43,7 +62,14 @@ const Listverified = () => {
                 <li className="w-[20%]">{user?.phoneNumber}</li>
                 <li className="w-[20%]">{user?.createdAt.slice(0, 10)}</li>
                 <li className="w-[20%]">{user?.project.title}</li>
-                <li className="w-[10%]">{user?.botUser.status}</li>
+                <li className="w-[10%]">
+                  <button
+                    onClick={() => payForUser(user?.phoneNumber)}
+                    className="px-6 py-2 text-white bg-[#433aeb] rounded-md cursor-pointer"
+                  >
+                    Pay
+                  </button>
+                </li>
               </ul>
             );
           })}

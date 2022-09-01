@@ -3,6 +3,7 @@ export const ReducerStore = (
     allUsers: [],
     code: "",
     verifiedUsers: [],
+    phoneNumber : ""
   },
   action
 ) => {
@@ -30,6 +31,17 @@ export const ReducerStore = (
     return {
       ...state,
       projects: action.projects,
+    };
+  } else if (action.type === "PHONE_NUMBER") {
+    return {
+      ...state,
+      phoneNumber: action.phoneNumber,
+    };
+  }
+  else if (action.type === "ID") {
+    return {
+      ...state,
+      userId: action.userId,
     };
   }
 };

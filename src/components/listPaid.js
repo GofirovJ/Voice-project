@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {get_paid_user } from "../store/action";
-import axios from 'axios';
+import { get_paid_user } from "../store/action";
+import axios from "axios";
 
-const baseURL = "https://open-budget1.herokuapp.com";
+const baseURL = "https://open-budget-pro.herokuapp.com";
 const PaidUsers = () => {
   const dispatch = useDispatch();
-    const state = useSelector((state) => state);
+  const state = useSelector((state) => state);
 
-    useEffect(() => {
-        axios
-          .get(`${baseURL}/v1/users/paid_users`)
-          .then((response) => {
-            // console.log(response.data.object);
-            dispatch(get_paid_user(response.data));
-          })
-          .catch((error) => {
-            return error;
-          });
-      }, [dispatch]);
+  useEffect(() => {
+    axios
+      .get(`${baseURL}/v1/users/paid_users`)
+      .then((response) => {
+        // console.log("paid users",response);
+        dispatch(get_paid_user(response.data));
+      })
+      .catch((error) => {
+        return error;
+      });
+  }, [dispatch]);
   return (
     <>
-    <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
+      <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
         <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
           All Paid users
         </h1>
@@ -43,14 +43,16 @@ const PaidUsers = () => {
                 <li className="w-[20%]">{user?.phoneNumber}</li>
                 <li className="w-[20%]">{user?.createdAt.slice(0, 10)}</li>
                 <li className="w-[20%]">{user?.project.title}</li>
-                <li className="w-[10%]">{user?.botUser.status}</li>
+                <li className="w-[10%] text-[#58e683] font-semibold text-[20px] tracking-wider">
+                  Paid
+                </li>
               </ul>
             );
           })}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PaidUsers
+export default PaidUsers;

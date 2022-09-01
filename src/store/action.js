@@ -28,3 +28,15 @@ export const get_projects = (projects) => {
       projects,
    }; 
 };
+export const phone_of_user = (phoneNumber) => {
+   return {
+      type: "PHONE_NUMBER",
+      phoneNumber,
+   }; 
+};
+export const id_of_user = (userId) => {
+   return {
+      type: "ID",
+      userId,
+   }; 
+};

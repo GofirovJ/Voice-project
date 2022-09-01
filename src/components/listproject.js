@@ -1,44 +1,50 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-// import { get_projects } from "../store/action";
-// import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { get_projects } from "../store/action";
+import axios from "axios";
 
-// const baseURL = "https://open-budget1.herokuapp.com";
+const baseURL = "https://open-budget-pro.herokuapp.com";
 const Listverified = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState("");
 
-//   useEffect(() => {
-//     axios
-//       .get(`${baseURL}/v1/projects`)
-//       .then((response) => {
-//         // console.log(response.data.object);
-//         dispatch(get_projects(response.data));
-//       })
-//       .catch((error) => {
-//         return error;
-//       });
-//   }, []);
+  useEffect(() => {
+    axios
+      .get(`${baseURL}/v1/projects`)
+      .then((response) => {
+        // console.log("get projects",response);
+        dispatch(get_projects(response.data));
+      })
+      .catch((error) => {
+        return error;
+      });
+  }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(title);
-    // axios
-    //   .post(
-    //     `${baseURL}/v1/projects`,
-    //     { title: title },
-    //   )
-    //   .then((response) => {
-    //     setTitle("");
-    //       console.log(response);
-    //       setModal(false);
-    //   })
-    //   .catch((err) => {
-    //     setTitle("");
-    //     return err;
-    //   });
+    axios
+      .post(`${baseURL}/v1/projects`, { title: title })
+      .then((response) => {
+        setTitle("");
+        // console.log("add project",response);
+        setModal(false);
+      })
+      .catch((err) => {
+        setTitle("");
+        return err;
+      });
+    axios
+      .get(`${baseURL}/v1/projects`)
+      .then((response) => {
+        // console.log(response.data.object);
+        dispatch(get_projects(response.data));
+      })
+      .catch((error) => {
+        return error;
+      });
   };
 
   const openModal = () => {
