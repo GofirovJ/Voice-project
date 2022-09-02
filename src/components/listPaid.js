@@ -21,16 +21,16 @@ const PaidUsers = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
+      <div className="w-[80%] h-full bg-[#F7F9FB] p-20">
         <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
-          All Paid users
+          To'lov qilingan foydalanuvchilar
         </h1>
         <div className="py-10 h-full overflow-y-scroll">
           <ul className="text-[20px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
             <li className="w-[10%]">No:</li>
-            <li className="w-[20%]">Phone Number:</li>
-            <li className="w-[20%]">Date:</li>
-            <li className="w-[20%]">Project title:</li>
+            <li className="w-[20%]">Telefon raqam:</li>
+            <li className="w-[20%]">Sana:</li>
+            <li className="w-[20%]">Loyiha nomi:</li>
             <li className="w-[10%]">Status</li>
           </ul>
           {state?.paidUsers?.object.map((user) => {
@@ -44,7 +44,7 @@ const PaidUsers = () => {
                 <li className="w-[20%]">{user?.createdAt.slice(0, 10)}</li>
                 <li className="w-[20%]">{user?.project.title}</li>
                 <li className="w-[10%] text-[#58e683] font-semibold text-[20px] tracking-wider">
-                  Paid
+                  To'landi
                 </li>
               </ul>
             );

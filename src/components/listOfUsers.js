@@ -43,7 +43,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
             // console.log(num);
             if (num === 9) {
               clearInterval(interval);
-              dispatch(code_of_user("Request failed try again !"));
+              dispatch(code_of_user("Kod yuborilmadi qayta urunib ko'ring"));
               // console.log("cleared");
             }
           }
@@ -75,17 +75,17 @@ const ListOfUsers = ({ setModal, setLoader }) => {
 
   return (
     <>
-      <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
+      <div className="w-[80%] h-full bg-[#F7F9FB] p-20">
         <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
-          All users
+         Yangi foydalanuvchilar
         </h1>
         <div className="py-10 h-full overflow-y-scroll">
           <ul className="text-[20px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
             <li className="w-[10%]">No:</li>
-            <li className="w-[25%]">Phone Number:</li>
-            <li className="w-[20%]">Date:</li>
-            <li className="w-[25%]">Project title:</li>
-            <li className="w-[20%]">Get Code:</li>
+            <li className="w-[25%]">Telefon raqam:</li>
+            <li className="w-[20%]">Sana:</li>
+            <li className="w-[25%]">Loyiha nomi:</li>
+            <li className="w-[20%]">Kodni olish:</li>
           </ul>
           {state?.allUsers?.object?.map((user) => {
             return (
@@ -94,15 +94,15 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                 className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-between items-center transition duration-300 rounded-md"
               >
                 <li className="w-[10%]">{user?.id}</li>
-                <li className="w-[20%]">{user?.phoneNumber}</li>
+                <li className="w-[25%]">{user?.phoneNumber}</li>
                 <li className="w-[20%]">{user?.createdAt.slice(0, 10)}</li>
-                <li className="w-[20%]">{user?.project.title}</li>
-                <li className="w-[10%]">
+                <li className="w-[25%]">{user?.project.title}</li>
+                <li className="w-[20%]">
                   <button
                     onClick={() => getCodeRequest(user?.phoneNumber, user?.id)}
                     className="border border-solid border-[#433aeb] px-4 py-1 rounded-md hover:bg-[#433aeb] hover:text-white"
                   >
-                    Request
+                    So'rov
                   </button>
                 </li>
               </ul>

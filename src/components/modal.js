@@ -196,7 +196,7 @@ const Modal = ({ setModal }) => {
               {state?.code.length > 0 ? (
                 <div className="h-[50%] flex flex-col justify-center items-center ">
                   <h2 className="text-[25px] font-medium tracking-wider my-2">
-                    Code :
+                    Kod :
                   </h2>
                   <h2
                     className={`text-[27px] font-bold tracking-wider transition-all duration-300 ${
@@ -214,19 +214,19 @@ const Modal = ({ setModal }) => {
                   onClick={verifiedCode}
                   className={`submitBtn px-6 py-2 bg-[#42c07d] text-white cursor-pointer rounded-md`}
                 >
-                  Verified
+                  Tekshirildi
                 </button>
                 <button
                   onClick={resendCode}
                   className={`unSubmitBtn px-4 py-2 bg-[#c3cc42] text-white cursor-pointer rounded-md`}
                 >
-                  Resend Code
+                  Qayta so'rov
                 </button>
                 <button
                   onClick={failedCode}
                   className={`failedBtn px-4 py-2 bg-[#cc4242] text-white cursor-pointer rounded-md`}
                 >
-                  Request failed
+                 Qabul qilinmadi
                 </button>
                 {/* ${state?.code.length > 0 ? `` : `cursor-not-allowed`}  */}
               </div>

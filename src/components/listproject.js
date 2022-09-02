@@ -14,7 +14,7 @@ const Listverified = () => {
     axios
       .get(`${baseURL}/v1/projects`)
       .then((response) => {
-        // console.log("get projects",response);
+        console.log("get projects",response);
         dispatch(get_projects(response.data));
       })
       .catch((error) => {
@@ -56,32 +56,32 @@ const Listverified = () => {
   return (
     <>
       {!modal ? (
-        <div className="w-[85%] h-full bg-[#F7F9FB] p-20">
+        <div className="w-[80%] h-full bg-[#F7F9FB] p-20">
           <div className="flex justify-between items-center">
             <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
-              All Projects
+              Loyihalar
             </h1>
             <button
               onClick={openModal}
               className="px-6 py-2 font-medium text-[20px] text-white rounded-md bg-[#433aeb]"
             >
-              Add Project
+              Loyiha qo'shish
             </button>
           </div>
 
           <div className="py-10 h-full overflow-y-scroll">
             <ul className="text-[20px] flex justify-start items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
               <li className="w-[10%]">No:</li>
-              <li className="w-[30%]">Project Title:</li>
+              <li className="w-[30%]">Loyiha nomi</li>
             </ul>
             {state?.projects?.object?.map((project) => {
               return (
                 <ul
                   key={project.id}
-                  className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-between items-center transition duration-300 rounded-md"
+                  className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-start items-center transition duration-300 rounded-md"
                 >
                   <li className="w-[10%]">{project?.id}</li>
-                  <li className="w-[20%]">{project?.project.title}</li>
+                  <li className="w-[20%]">{project?.title}</li>
                 </ul>
               );
             })}
@@ -114,12 +114,12 @@ const Listverified = () => {
                 <input
                   onChange={(e) => setTitle(e.target.value)}
                   type="text"
-                  placeholder="Title of project:"
+                  placeholder="Loyiha nomi:"
                   className="w-[75%] outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
                 />
                 <input
                   type="submit"
-                  value="Add"
+                  value="Qo'shish"
                   className="bg-[#433aeb]  text-white cursor-pointer px-4 py-2 rounded-md"
                 />
               </form>

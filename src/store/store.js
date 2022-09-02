@@ -7,7 +7,7 @@ export const store = createStore(ReducerStore);
 store.subscribe(
    throttle(() => {
       store.getState();
-      console.log("storegetstate", store.getState());
+      // console.log("storegetstate", store.getState());
    }),
    1000
 );
