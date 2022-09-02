@@ -69,7 +69,7 @@ const Listverified = () => {
             </button>
           </div>
 
-          <div className="py-10 h-full overflow-y-scroll">
+          <div className="h-full overflow-y-scroll">
             <ul className="text-[20px] flex justify-start items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
               <li className="w-[10%]">No:</li>
               <li className="w-[30%]">Loyiha nomi</li>
@@ -126,7 +126,7 @@ const Listverified = () => {
                 <input
                   type="submit"
                   value="Qo'shish"
-                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-4 py-2 rounded-md"
+                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-6 py-2 rounded-md"
                 />
               </form>
             </div>
