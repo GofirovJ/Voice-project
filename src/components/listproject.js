@@ -9,42 +9,42 @@ const Listverified = () => {
   const state = useSelector((state) => state);
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState("");
+  const [number, setNumber] = useState(null)
 
-  useEffect(() => {
+  const getPaid = () => {
     axios
-      .get(`${baseURL}/v1/projects`)
-      .then((response) => {
-        console.log("get projects",response);
-        dispatch(get_projects(response.data));
-      })
-      .catch((error) => {
-        return error;
-      });
-  }, [dispatch]);
+    .get(`${baseURL}/v1/projects`)
+    .then((response) => {
+      console.log("get projects",response);
+      dispatch(get_projects(response.data));
+    })
+    .catch((error) => {
+      return error;
+    });
+  }
+  useEffect(() => {
+    getPaid()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(title);
+    // let data = {}
+    
     axios
-      .post(`${baseURL}/v1/projects`, { title: title })
+      .post(`${baseURL}/v1/projects`, { title: title, title_id:number, status:true })
       .then((response) => {
         setTitle("");
-        // console.log("add project",response);
+        console.log("add project",response);
         setModal(false);
       })
       .catch((err) => {
         setTitle("");
         return err;
       });
-    axios
-      .get(`${baseURL}/v1/projects`)
-      .then((response) => {
-        // console.log(response.data.object);
-        dispatch(get_projects(response.data));
-      })
-      .catch((error) => {
-        return error;
-      });
+      setTimeout(() => {
+        getPaid()        
+      }, 200);
   };
 
   const openModal = () => {
@@ -109,18 +109,24 @@ const Listverified = () => {
             <div className="flex flex-col justify-center items-center h-full">
               <form
                 onSubmit={handleSubmit}
-                className="flex justify-between items-center"
-              >
+                className="w-full flex flex-col justify-between items-center"
+                >
+                  <input
+                    onChange={(e) => setNumber(e.target.value)}
+                    type="number"
+                    placeholder="Loyiha id raqami:"
+                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
+                  />
                 <input
                   onChange={(e) => setTitle(e.target.value)}
                   type="text"
                   placeholder="Loyiha nomi:"
-                  className="w-[75%] outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
+                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
                 />
                 <input
                   type="submit"
                   value="Qo'shish"
-                  className="bg-[#433aeb]  text-white cursor-pointer px-4 py-2 rounded-md"
+                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-4 py-2 rounded-md"
                 />
               </form>
             </div>

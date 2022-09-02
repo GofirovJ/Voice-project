@@ -12,7 +12,7 @@ const Listverified = () => {
     axios
       .get(`${baseURL}/v1/users/verified_users`)
       .then((response) => {
-        console.log("verified users", response);
+        // console.log("verified users", response);
 
         dispatch(get_verified_user(response.data.object));
       })
