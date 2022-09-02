@@ -24,6 +24,7 @@ const Modal = ({ setModal }) => {
 
   const closeModal = () => {
     dispatch(code_of_user(""));
+    dispatch(phone_of_user(""));
     setModal(false);
     refreshUsers();
   };
