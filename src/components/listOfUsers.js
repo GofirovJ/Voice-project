@@ -15,8 +15,6 @@ const ListOfUsers = ({ setModal, setLoader }) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  const [copied, setCopied] = useState(false)
-
   const getCodeRequest = (phoneNumber, userId) => {
     dispatch(phone_of_user(phoneNumber));
     dispatch(id_of_user(userId));
