@@ -44,7 +44,6 @@ const Listverified = () => {
         <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
           Tekshirilgan foydalanuvchilar
         </h1>
-        <div className="py-10 h-full overflow-y-scroll">
           <ul className="text-[20px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
             <li className="w-[10%]">No:</li>
             <li className="w-[20%]">Telefon raqam:</li>
@@ -52,13 +51,14 @@ const Listverified = () => {
             <li className="w-[20%]">Loyiha nomi:</li>
             <li className="w-[10%]">To'lov</li>
           </ul>
-          {state?.verifiedUsers?.map((user) => {
+        <div className="h-[75%] overflow-y-scroll">
+          {state?.verifiedUsers?.map((user, i) => {
             return (
               <ul
                 key={user.id}
                 className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-between items-center transition duration-300 rounded-md"
               >
-                <li className="w-[10%]">{user?.id}</li>
+                <li className="w-[10%]">{i+1}</li>
                 <li className="w-[20%]">{user?.phoneNumber}</li>
                 <li className="w-[20%]">{user?.createdAt.slice(0, 10)}</li>
                 <li className="w-[20%]">{user?.project.title}</li>

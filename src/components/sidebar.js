@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
     <>
-      <div className="w-[20%] h-full  py-2 px-4 bg-[#ffffff]">
+      <div className="w-[20%] h-full overflow-y-scroll  py-2 px-4 bg-[#ffffff]">
         <ul className="text-[14px] font-medium py-6 text-[#2c384aae]">
           <Link to="/">
             <li className="mt-4 mb-6 cursor-pointer hover:bg-[#5046E5] hover:text-white transition duration-300 py-2 px-4 rounded-md">
