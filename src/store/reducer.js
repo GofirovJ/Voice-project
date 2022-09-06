@@ -3,7 +3,8 @@ export const ReducerStore = (
     allUsers: [],
     code: "",
     verifiedUsers: [],
-    phoneNumber : ""
+    phoneNumber : "",
+    notify: false,
   },
   action
 ) => {
@@ -42,6 +43,12 @@ export const ReducerStore = (
     return {
       ...state,
       userId: action.userId,
+    };
+  }
+  else if (action.type === "NOTIFY") {
+    return {
+      ...state,
+      notify: action.notify,
     };
   }
 };

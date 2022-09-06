@@ -142,11 +142,10 @@ const Modal = ({ setModal }) => {
     <>
       <div className="absolute w-full h-full top-0 left-0 bg-transparent">
         <div
-          // onClick={closeModal}
           className="fixed top-0 right-0 w-full h-full bg-[rgba(0,0,0,0.4)]"
         ></div>
-        <div className="absolute w-[45%] h-[350px] translate-x-[65%] translate-y-[35%] bg-white rounded-lg ">
-          <div className="absolute right-1 top-3">
+        <div className="absolute w-[45%] h-[300px] translate-x-[65%] translate-y-[35%] bg-white rounded-lg ">
+          {/* <div className="absolute right-1 top-3">
             <button
               onClick={closeModal}
               className={`closeButton cursor-pointer w-[35px] h-[35px] bg-transparent relative mx-4 p-0 overflow-hidden text-[0] close`}
@@ -155,8 +154,7 @@ const Modal = ({ setModal }) => {
                 close button
               </span>
             </button>
-          </div>
-          <div className="flex justify-center items-center h-full">
+          </div> */}
             {/* <div className="w-[40%] h-full py-4 px-6 ">
               <ul>
                 <li className="mt-5">
@@ -210,7 +208,7 @@ const Modal = ({ setModal }) => {
               ) : (
                 <div className="loader h-[50%] w-full flex justify-center items-center"></div>
               )}
-              <div className=" h-[50%] w-full flex justify-around items-center">
+              <div className="w-full flex justify-around items-center">
                 <button
                   onClick={verifiedCode}
                   className={`submitBtn px-6 py-2 bg-[#42c07d] text-white cursor-pointer rounded-md`}
@@ -232,7 +230,6 @@ const Modal = ({ setModal }) => {
                 {/* ${state?.code.length > 0 ? `` : `cursor-not-allowed`}  */}
               </div>
             </div>
-          </div>
         </div>
       </div>
     </>

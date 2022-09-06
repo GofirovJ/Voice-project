@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_all_user,
@@ -14,6 +14,24 @@ const ListOfUsers = ({ setModal, setLoader }) => {
   let num = 0;
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const getNewUsers = () => {
+    const btn = document.querySelector(".newUsers");
+    btn.classList.add("btn_animation");
+    axios
+      .get(`${baseURL}/v1/users/new_users`)
+      .then((response) => {
+        // console.log("new users", response);
+        // console.log(response.data.object);
+        dispatch(get_all_user(response.data));
+        setTimeout(() => {
+          btn.classList.remove("btn_animation");
+        }, 5000);
+      })
+      .catch((error) => {
+        return error;
+      });
+  };
 
   const getCodeRequest = (phoneNumber, userId) => {
     dispatch(phone_of_user(phoneNumber));
@@ -64,7 +82,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
     axios
       .get(`${baseURL}/v1/users/new_users`)
       .then((response) => {
-        // console.log("new users", response);
+        console.log("new users", response);
         // console.log(response.data.object);
         dispatch(get_all_user(response.data));
       })
@@ -73,28 +91,48 @@ const ListOfUsers = ({ setModal, setLoader }) => {
       });
   }, [dispatch]);
 
-  const copyElement = (phone, id) => {
-    let element = document.getElementById(id)
-    navigator.clipboard.writeText(phone)
-    element.classList.remove("hidden")
-    setTimeout(() => {
-      element.classList.add("hidden")
-    }, 800);
+  const reject = (phone) => {
+      console.log("reject", phone)
   }
+
+  const copyElement = (phone, id) => {
+    let element = document.getElementById(id);
+    navigator.clipboard.writeText(phone);
+    element.classList.remove("hidden");
+    setTimeout(() => {
+      element.classList.add("hidden");
+    }, 800);
+  };
 
   return (
     <>
       <div className="w-[80%] h-full bg-[#F7F9FB] p-20">
-        <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
-          Yangi foydalanuvchilar
-        </h1>
-        <ul className="text-[20px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
-            <li className="w-[5%] ">No:</li>
-            <li className="w-[20%] ">Telefon raqam:</li>
-            <li className="w-[15%] ">Sana:</li>
-            <li className="w-[25%] ">Loyiha nomi:</li>
-            <li className="w-[15%] ">Kodni olish:</li>
-            <li className="w-[10%] ">Nusxa</li>
+        <div className="flex justify-between items-center">
+          <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
+            Yangi foydalanuvchilar
+          </h1>
+          <button
+            onClick={getNewUsers}
+            className="newUsers cursor-pointer mt-4"
+          >
+            <svg
+              width="30px"
+              height="30px"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M19.146 4.854l-1.489 1.489A8 8 0 1 0 12 20a8.094 8.094 0 0 0 7.371-4.886 1 1 0 1 0-1.842-.779A6.071 6.071 0 0 1 12 18a6 6 0 1 1 4.243-10.243l-1.39 1.39a.5.5 0 0 0 .354.854H19.5A.5.5 0 0 0 20 9.5V5.207a.5.5 0 0 0-.854-.353z" />
+            </svg>
+          </button>
+        </div>
+        <ul className="text-[18px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
+          <li className="w-[5%]">No</li>
+          <li className="w-[20%]">Telefon raqam</li>
+          <li className="w-[15%]">Sana</li>
+          <li className="w-[25%]">Loyiha nomi</li>
+          <li className="w-[15%] text-center">Kodni olish</li>
+          <li className="w-[10%] text-center ">Nusxa</li>
+          <li className="w-[10%] text-center">Rad etish</li>
         </ul>
         <div className="h-[75%] overflow-y-scroll">
           {state?.allUsers?.object?.map((user, i) => {
@@ -103,11 +141,11 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                 key={user.id}
                 className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-between items-center transition duration-300 rounded-md"
               >
-                <li className="w-[5%]">{i+1}</li>
+                <li className="w-[5%]">{i + 1}</li>
                 <li className="w-[20%]">{user?.phoneNumber}</li>
                 <li className="w-[15%]">{user?.createdAt.slice(0, 10)}</li>
                 <li className="w-[25%]">{user?.project.title}</li>
-                <li className="w-[15%]">
+                <li className="w-[15%] text-center">
                   <button
                     onClick={() => getCodeRequest(user?.phoneNumber, user?.id)}
                     className="border border-solid border-[#433aeb] px-4 py-1 rounded-md hover:bg-[#433aeb] hover:text-white"
@@ -136,7 +174,27 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                       fill="black"
                     />
                   </svg>
-                    <p id={user?.id} className="absolute -bottom-4 text-[10px] hidden">Nusxalandi</p>
+                  <p
+                    id={user?.id}
+                    className="absolute -bottom-4 text-[10px] hidden"
+                  >
+                    Nusxalandi
+                  </p>
+                </li>
+                <li className="w-[10%] flex justify-center items-center">
+                  <svg
+                    onClick={() => reject(user?.phoneNumber)}
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    version="1.2"
+                    baseProfile="tiny"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill="#f11d1d"
+                      d="M12 4c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zm-5 8c0-.832.224-1.604.584-2.295l6.711 6.711c-.691.36-1.463.584-2.295.584-2.757 0-5-2.243-5-5zm9.416 2.295l-6.711-6.711c.691-.36 1.463-.584 2.295-.584 2.757 0 5 2.243 5 5 0 .832-.224 1.604-.584 2.295z" />
+                  </svg>
                 </li>
               </ul>
             );

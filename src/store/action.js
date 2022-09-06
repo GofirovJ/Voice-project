@@ -40,3 +40,9 @@ export const id_of_user = (userId) => {
       userId,
    }; 
 };
+export const notify = (notify) => {
+   return {
+      type: "NOTIFY",
+      notify,
+   }; 
+};
