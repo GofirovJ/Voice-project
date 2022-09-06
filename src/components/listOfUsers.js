@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_all_user,
@@ -14,7 +14,9 @@ const ListOfUsers = ({ setModal, setLoader }) => {
   let num = 0;
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
+  const [askModal, setAskModal] = useState(false);
+  const [phone, setPhone]=useState("")
+  
   const getNewUsers = () => {
     const btn = document.querySelector(".newUsers");
     btn.classList.add("btn_animation");
@@ -91,8 +93,29 @@ const ListOfUsers = ({ setModal, setLoader }) => {
       });
   }, [dispatch]);
 
-  const reject = (phone) => {
-      console.log("reject", phone)
+  const reject = (event) => {
+    event.preventDefault();
+    // let data = {}
+
+    axios
+      .post(`${baseURL}/v1/users/user_not_verified/${phone}`)
+      .then((response) => {
+        // console.log("phone rejected", response);
+        setAskModal(false);
+      })
+      .catch((err) => {
+        return err;
+      });
+    setTimeout(() => {
+      getNewUsers();
+    }, 200);
+  };
+  const openAskModal = (phoneNumber) => {
+    setAskModal(true)
+    setPhone(phoneNumber)
+  }
+  const closeAskModal = () => {
+    setAskModal(false)
   }
 
   const copyElement = (phone, id) => {
@@ -111,19 +134,22 @@ const ListOfUsers = ({ setModal, setLoader }) => {
           <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
             Yangi foydalanuvchilar
           </h1>
-          <button
-            onClick={getNewUsers}
-            className="newUsers cursor-pointer mt-4"
-          >
-            <svg
-              width="30px"
-              height="30px"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="flex justify-end items-center">
+            <p className="text-[24px] font-medium text-[#2c384a] mx-2">Yangilash</p>
+            <button
+              onClick={getNewUsers}
+              className="newUsers cursor-pointer mt-2"
             >
-              <path d="M19.146 4.854l-1.489 1.489A8 8 0 1 0 12 20a8.094 8.094 0 0 0 7.371-4.886 1 1 0 1 0-1.842-.779A6.071 6.071 0 0 1 12 18a6 6 0 1 1 4.243-10.243l-1.39 1.39a.5.5 0 0 0 .354.854H19.5A.5.5 0 0 0 20 9.5V5.207a.5.5 0 0 0-.854-.353z" />
-            </svg>
-          </button>
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M19.146 4.854l-1.489 1.489A8 8 0 1 0 12 20a8.094 8.094 0 0 0 7.371-4.886 1 1 0 1 0-1.842-.779A6.071 6.071 0 0 1 12 18a6 6 0 1 1 4.243-10.243l-1.39 1.39a.5.5 0 0 0 .354.854H19.5A.5.5 0 0 0 20 9.5V5.207a.5.5 0 0 0-.854-.353z" />
+              </svg>
+            </button>
+          </div>
         </div>
         <ul className="text-[18px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
           <li className="w-[5%]">No</li>
@@ -132,7 +158,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
           <li className="w-[25%]">Loyiha nomi</li>
           <li className="w-[15%] text-center">Kodni olish</li>
           <li className="w-[10%] text-center ">Nusxa</li>
-          <li className="w-[10%] text-center">Rad etish</li>
+          <li className="w-[10%] text-center">Qatnashgan</li>
         </ul>
         <div className="h-[75%] overflow-y-scroll">
           {state?.allUsers?.object?.map((user, i) => {
@@ -183,17 +209,24 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                 </li>
                 <li className="w-[10%] flex justify-center items-center">
                   <svg
-                    onClick={() => reject(user?.phoneNumber)}
+                    className="cursor-pointer"
+                    onClick={() => openAskModal(user?.phoneNumber)}
                     width="24px"
                     height="24px"
                     viewBox="0 0 24 24"
-                    version="1.2"
-                    baseProfile="tiny"
                     xmlns="http://www.w3.org/2000/svg"
-                  >
+                    fill="none"
+                    >
                     <path
-                      fill="#f11d1d"
-                      d="M12 4c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zm-5 8c0-.832.224-1.604.584-2.295l6.711 6.711c-.691.36-1.463.584-2.295.584-2.757 0-5-2.243-5-5zm9.416 2.295l-6.711-6.711c.691-.36 1.463-.584 2.295-.584 2.757 0 5 2.243 5 5 0 .832-.224 1.604-.584 2.295z" />
+                      d="M16.5163 8.93451L11.0597 14.7023L8.0959 11.8984"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                    <path
+                      d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
                   </svg>
                 </li>
               </ul>
@@ -201,6 +234,42 @@ const ListOfUsers = ({ setModal, setLoader }) => {
           })}
         </div>
       </div>
+      {askModal ? (
+          <div className="absolute w-full h-full top-0 left-0 bg-transparent">
+          <div
+            // onClick={closeModal}
+            className="fixed top-0 right-0 w-full h-full bg-[rgba(0,0,0,0.4)]"
+          ></div>
+          <div className="absolute w-[40%] h-[180px] translate-x-[90%] translate-y-[80%] bg-white rounded-lg ">
+            <div className="absolute right-1 top-3">
+              <button
+                onClick={closeAskModal}
+                className={`closeButton cursor-pointer w-[35px] h-[35px] bg-transparent relative mx-4 p-0 overflow-hidden text-[0] close`}
+              >
+                <span className="absolute block bg-white w-[30px] h-[3px] top-[16px] left-[2px] right-[2px] rounded-[2px]">
+                  close button
+                </span>
+              </button>
+            </div>
+            <p className="text-[20px] font-medium mt-10 text-center">Haqiqatdan ham foydalanuvchi qatnashganmi?</p>
+            <div className="mt-6">
+              <form
+                onSubmit={reject}
+                className="w-full flex justify-center items-center"
+              >
+                <input
+                  type="submit"
+                  value="Ha"
+                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8"
+                />
+                <button  onClick={closeAskModal} className="bg-[#d32b2b] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8" >
+                  Yo'q
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      ): null}
     </>
   );
 };
