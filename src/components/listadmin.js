@@ -14,6 +14,30 @@ const ListAdmin = () => {
   const [rePassword, setRePassword] = useState("");
   const [error, setError] = useState(false);
   const [error2, setError2] = useState(false);
+  const [eye, setEye] = useState(true);
+  const [eye2, setEye2] = useState(true);
+
+  const show = () => {
+    const input = document.querySelector(".passwordAdmin");
+    if (eye) {
+      setEye(false);
+      input.type = "text";
+    } else {
+      setEye(true);
+      input.type = "password";
+    }
+  };
+
+  const showAgain = () => {
+    const input = document.querySelector(".repassword");
+    if (eye2) {
+      setEye2(false);
+      input.type = "text";
+    } else {
+      setEye2(true);
+      input.type = "password";
+    }
+  };
 
   const getAdmin = () => {
     axios
@@ -40,29 +64,29 @@ const ListAdmin = () => {
           password: password,
         })
         .then((response) => {
-        //   console.log("add admin", response);
+          //   console.log("add admin", response);
           setModal(false);
           setLogin("");
           setPassword("");
           setRePassword("");
         })
         .catch((err) => {
-            // return err;
-            // console.log(err)
-            if (err?.response.status === 409) {
-                setError2(true)
-                setLogin("");
-                setPassword("");
-                setRePassword("");
-                setTimeout(() => {
-                    setError2(false);
-                  }, 1500);
-            }
-            return err
+          // return err;
+          // console.log(err)
+          if (err?.response.status === 409) {
+            setError2(true);
+            setLogin("");
+            setPassword("");
+            setRePassword("");
+            setTimeout(() => {
+              setError2(false);
+            }, 1500);
+          }
+          return err;
         });
-        setTimeout(() => {
-            getAdmin();
-          }, 200);
+      setTimeout(() => {
+        getAdmin();
+      }, 200);
     } else {
       setError(true);
       setLogin("");
@@ -72,8 +96,6 @@ const ListAdmin = () => {
         setError(false);
       }, 2000);
     }
-
- 
   };
 
   //   const openAskModal = (id) => {
@@ -175,31 +197,65 @@ const ListAdmin = () => {
                 onSubmit={handleSubmit}
                 className="w-full flex flex-col justify-between items-center"
               >
-                <input
-                  onChange={(e) => setLogin(e.target.value)}
-                  type="Login"
-                  placeholder="Login:"
-                  value={login}
-                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
-                />
-                <input
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  placeholder="Parol kiriting:"
-                  value={password}
-                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
-                />
-                <input
-                  onChange={(e) => setRePassword(e.target.value)}
-                  type="password"
-                  placeholder="Parolni qayta kiriting:"
-                  value={rePassword}
-                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
-                />
+                <label
+                  htmlFor="adminLogin"
+                  className="w-[25%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
+                >
+                  <input
+                    id="adminLogin"
+                    onChange={(e) => setLogin(e.target.value)}
+                    type="text"
+                    placeholder="Login:"
+                    value={login}
+                    className="w-[90%] h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
+                  />
+                </label>
+                <label
+                  htmlFor="password"
+                  className="w-[25%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
+                >
+                  <input
+                    id="password"
+                    className="passwordAdmin w-[90%] h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
+                    placeholder="Parol kiriting:"
+                    type="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                  <img
+                    onClick={show}
+                    className="w-[20px] h-[20px] cursor-pointer mr-2"
+                    src={eye ? "./eye-hide.svg" : "./eye-show.svg"}
+                    alt="icon"
+                  />
+                </label>
+                <label
+                  htmlFor="repassword"
+                  className="w-[25%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
+                >
+                  <input
+                    id="repassword"
+                    className="repassword w-[90%] h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
+                    placeholder="Parolni qayta kiriting:"
+                    type="password"
+                    value={rePassword}
+                    onChange={(e) => {
+                      setRePassword(e.target.value);
+                    }}
+                  />
+                  <img
+                    onClick={showAgain}
+                    className="w-[20px] h-[20px] cursor-pointer mr-2"
+                    src={eye2 ? "./eye-hide.svg" : "./eye-show.svg"}
+                    alt="icon"
+                  />
+                </label>
                 <input
                   type="submit"
                   value="Qo'shish"
-                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-6 py-2 rounded-md"
+                  className="bg-[#433aeb] my-1  text-white cursor-pointer px-8 py-2 rounded-md"
                 />
                 {error ? (
                   <p className="text-[14px] font-normal text-red-600">

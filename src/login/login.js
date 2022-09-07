@@ -1,20 +1,32 @@
-import React, {useState} from "react";
-import axios from "axios"
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { notify } from "../store/action";
 
 const baseURL = "https://open-budget-pro.herokuapp.com";
-const Login = ({setAccess}) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [username, setUserName] = useState("")
-  const [password, setPassword] = useState("")
+const Login = ({ setAccess }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [eye, setEye] = useState(true);
+
+  const show = () => {
+    const input = document.querySelector(".password");
+    if (eye) {
+      setEye(false);
+      input.type = "text";
+    } else {
+      setEye(true);
+      input.type = "password";
+    }
+  };
 
   const errorNotify = () => {
-    toast.error('Login yoki Parol xato kiritildi', {
+    toast.error("Login yoki Parol xato kiritildi", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -22,33 +34,31 @@ const Login = ({setAccess}) => {
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      });
-  }
-
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(`${baseURL}/v1/admins/login`,{username, password})
-    .then((response) => {
-      console.log(response);
-      if (response?.data.success) {
-        navigate("/")
-        dispatch(notify(true));
-        setAccess(true)
-      }
-      else {
-        errorNotify()
-        setUserName("")
-        setPassword("")
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-      errorNotify()
-      setUserName("")
-      setPassword("")
+    axios
+      .post(`${baseURL}/v1/admins/login`, { username, password })
+      .then((response) => {
+        if (response?.data.success) {
+          navigate("/");
+          dispatch(notify(true));
+          setAccess(true);
+        } else {
+          errorNotify();
+          setUserName("");
+          setPassword("");
+        }
       })
-  }
+      .catch((error) => {
+        errorNotify();
+        setUserName("");
+        setPassword("");
+        return error;
+      });
+  };
   return (
     <>
       <div className="loginContainer w-full h-[100vh]">
@@ -70,44 +80,67 @@ const Login = ({setAccess}) => {
             </svg>
           </div>
           <div className="h-[70vh] w-[40%]">
-            <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
-              {/* <label htmlFor="username" className="w-full text-white text-[25px] font-medium tracking-wider px-10 my-2">Username:</label> */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col justify-center items-center"
+            >
+              <label
+                htmlFor="username"
+                className="w-[60%] border-none bg-white outline-none rounded-md my-4"
+              >
+                <input
+                  id="username"
+                  autoComplete="off"
+                  className="w-full h-full border-none outline-none rounded-md px-4 py-4 bg-white"
+                  placeholder="Login"
+                  type="text"
+                  value={username}
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                  }}
+                />
+              </label>
+              <label 
+                htmlFor="password"
+                className="w-[60%] flex items-center border-none bg-white outline-none rounded-md my-4"
+              >
+                <input
+                  id="password"
+                  className="password w-[90%] h-full border-none outline-none rounded-md px-4 py-4 bg-white"
+                  placeholder="Parol"
+                  type="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <img
+                  onClick={show}
+                  className="w-[20px] h-[20px] cursor-pointer"
+                  src={eye ? "./eye-hide.svg" : "./eye-show.svg"}
+                  alt="icon"
+                />
+              </label>
               <input
-                id="username"
-                autoComplete="off"
-                className="w-[60%] border-none bg-white outline-none rounded-md py-4 px-4 my-4"
-                placeholder="Login"
-                type="text"
-                value={username}
-                onChange={(e)=>{setUserName(e.target.value)}}
+                className="w-[60%] border-none bg-[#5046E5] text-white my-4 cursor-pointer outline-[#11088f] rounded-md py-4 px-4"
+                type="submit"
+                value="Kirish"
               />
-              {/* <label htmlFor="password" className="w-full text-white text-[25px] font-medium tracking-wider px-10 my-2">Parol:</label> */}
-              <input
-                id="password"
-                className="w-[60%] border-none bg-white outline-none rounded-md py-4 px-4 my-4"
-                placeholder="Parol"
-                type="password"
-                value={password}
-                onChange={(e)=>{setPassword(e.target.value)}}
-              />
-              <input
-              className="w-[60%] border-none bg-[#5046E5] text-white my-4 cursor-pointer outline-[#11088f] rounded-md py-4 px-4"
-                type="submit" value="Kirish" />
             </form>
           </div>
         </div>
-            
-      <ToastContainer
-    position="top-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover={false}
-    />
+
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+        />
       </div>
     </>
   );

@@ -24,7 +24,7 @@ const Navbar = () => {
               id="search"
             />
           </label> */}
-          <button onClick={openDropdown} className="text-[20px] text-white cursor-pointer">
+          <button onClick={openDropdown} className="text-[20px] text-white cursor-pointer mr-14">
             <svg
               version="1.1"
               id="Ebene_1"
@@ -51,7 +51,7 @@ const Navbar = () => {
               </g>
             </svg>
           </button>
-          <Link to="/admin" className={`${dropdown ? `block` : `hidden`} w-[20%] group hover:bg-[#8479ff] hover:text-white transition duration-300 flex justify-start items-center cursor-pointer bg-white px-2 py-3 rounded-md absolute -bottom-12 right-5`}>
+          <Link to="/admin" className={`${dropdown ? `block` : `hidden`} w-[17%] group hover:bg-[#8479ff] hover:text-white transition duration-300 flex justify-start items-center cursor-pointer bg-white px-2 py-3 rounded-md absolute -bottom-12 right-20`}>
             <svg
                 className="group-hover:text-white transition duration-300 text-[#000]"
               width="28px"
@@ -69,7 +69,7 @@ const Navbar = () => {
                 fill="currentColor"
               />
             </svg>
-              <p className="font-medium tracking-wide mx-2">Admin sozlamalar</p>
+              <p className="font-medium mx-1">Admin sozlamalar</p>
           </Link>
         </div>
       </div>
