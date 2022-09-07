@@ -224,6 +224,7 @@ const ListAdmin = () => {
                       setPassword(e.target.value);
                     }}
                   />
+
                   <img
                     onClick={show}
                     className="w-[20px] h-[20px] cursor-pointer mr-2"
