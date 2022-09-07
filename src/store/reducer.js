@@ -3,8 +3,10 @@ export const ReducerStore = (
     allUsers: [],
     code: "",
     verifiedUsers: [],
+    projects: [],
     phoneNumber : "",
     notify: false,
+    admins: []
   },
   action
 ) => {
@@ -49,6 +51,12 @@ export const ReducerStore = (
     return {
       ...state,
       notify: action.notify,
+    };
+  }
+  else if (action.type === "GET_ADMINS") {
+    return {
+      ...state,
+      admins: action.admins,
     };
   }
 };

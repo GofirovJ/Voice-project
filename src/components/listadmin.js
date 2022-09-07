@@ -1,98 +1,96 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { get_projects } from "../store/action";
+import { get_admins } from "../store/action";
 import axios from "axios";
 
 const baseURL = "https://open-budget-pro.herokuapp.com";
-const Listverified = () => {
+const ListAdmin = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [modal, setModal] = useState(false);
-  const [askModal, setAskModal] = useState(false);
-  const [title, setTitle] = useState("");
-  const [number, setNumber] = useState(null);
-  const [id, setId] = useState("");
+  //   const [askModal, setAskModal] = useState(false);
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [error, setError] = useState(false);
-  const getPaid = () => {
+  const [error2, setError2] = useState(false);
+
+  const getAdmin = () => {
     axios
-      .get(`${baseURL}/v1/projects`)
+      .get(`${baseURL}/v1/admins`)
       .then((response) => {
-        // console.log("get projects", response);
-        dispatch(get_projects(response.data));
+        // console.log("get admins", response);
+        dispatch(get_admins(response.data));
       })
       .catch((error) => {
         return error;
       });
   };
   useEffect(() => {
-    getPaid();
+    getAdmin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password === rePassword) {
+      axios
+        .post(`${baseURL}/v1/admins`, {
+          username: login,
+          password: password,
+        })
+        .then((response) => {
+        //   console.log("add admin", response);
+          setModal(false);
+          setLogin("");
+          setPassword("");
+          setRePassword("");
+        })
+        .catch((err) => {
+            // return err;
+            // console.log(err)
+            if (err?.response.status === 409) {
+                setError2(true)
+                setLogin("");
+                setPassword("");
+                setRePassword("");
+                setTimeout(() => {
+                    setError2(false);
+                  }, 1500);
+            }
+            return err
+        });
+        setTimeout(() => {
+            getAdmin();
+          }, 200);
+    } else {
+      setError(true);
+      setLogin("");
+      setPassword("");
+      setRePassword("");
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+    }
 
-    axios
-      .post(`${baseURL}/v1/projects`, {
-        title: title,
-        title_id: number,
-        status: true,
-      })
-      .then((response) => {
-        setTitle("");
-        setNumber("");
-        // console.log("add project", response);
-        setModal(false);
-      })
-      .catch((err) => {
-        if (err?.response.status === 409) {
-          setError(true);
-          setTitle("");
-          setNumber("");
-          setTimeout(() => {
-            setError(false);
-          }, 2000);
-        }
-        return err;
-      });
-    setTimeout(() => {
-      getPaid();
-    }, 200);
+ 
   };
 
-  const deleteProject = (event) => {
-    event.preventDefault();
-    // let data = {}
-
-    axios
-      .delete(`${baseURL}/v1/projects/${id}`)
-      .then((response) => {
-        // console.log("project deleted", response);
-        setAskModal(false);
-      })
-      .catch((err) => {
-        return err;
-      });
-    setTimeout(() => {
-      getPaid();
-    }, 200);
-  };
-
-  const openAskModal = (id) => {
-    setId(id);
-    setAskModal(true);
-  };
-  const closeAskModal = () => {
-    setAskModal(false);
-  };
+  //   const openAskModal = (id) => {
+  //     setAskModal(true);
+  //   };
+  //   const closeAskModal = () => {
+  //     setAskModal(false);
+  //   };
 
   const openModal = () => {
     setModal(true);
   };
   const closeModal = () => {
     setModal(false);
-    setTitle("");
-    setNumber("");
+    setLogin("");
+    setPassword("");
+    setRePassword("");
   };
   return (
     <>
@@ -100,32 +98,34 @@ const Listverified = () => {
         <div className="w-[80%] h-full bg-[#F7F9FB] p-20">
           <div className="flex justify-between items-center">
             <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
-              Loyihalar
+              Adminlar
             </h1>
             <button
               onClick={openModal}
               className="px-6 py-2 font-medium text-[20px] text-white rounded-md bg-[#433aeb]"
             >
-              Loyiha qo'shish
+              Admin qo'shish
             </button>
           </div>
           <ul className="text-[20px] flex justify-start items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
             <li className="w-[10%]">No:</li>
-            <li className="w-[30%]">Loyiha nomi</li>
-            <li className="w-[60%] flex justify-end px-4">O'chirish</li>
+            <li className="w-[30%]">Admin</li>
+            {/* <li className="w-[60%] flex justify-end px-4">
+                O'chirish
+              </li> */}
           </ul>
           <div className="h-[75%] overflow-y-scroll">
-            {state?.projects?.object?.map((project, i) => {
+            {state?.admins?.object?.map((admin, i) => {
               return (
                 <ul
-                  key={project.id}
+                  key={admin.id}
                   className="list p-6 my-4 border  hover:border-[#433aeb] font-medium tracking-wider text-[#2c384a] flex justify-start items-center transition duration-300 rounded-md"
                 >
                   <li className="w-[10%]">{i + 1}</li>
-                  <li className="w-[30%]">{project?.title}</li>
-                  <li className="w-[60%] flex justify-end px-10">
+                  <li className="w-[30%]">{admin?.username}</li>
+                  {/* <li className="w-[60%] flex justify-end px-10">
                     <svg
-                      onClick={() => openAskModal(project?.id)}
+                      onClick={() => openAskModal(admin?.id)}
                       className="cursor-pointer"
                       version="1.1"
                       id="Uploaded to svgrepo.com"
@@ -147,7 +147,7 @@ const Listverified = () => {
 	c0.276,0,0.5-0.224,0.5-0.5v-16c0-0.276-0.224-0.5-0.5-0.5S11,10.224,11,10.5v16C11,26.776,11.224,27,11.5,27z"
                       />
                     </svg>
-                  </li>
+                  </li> */}
                 </ul>
               );
             })}
@@ -176,17 +176,24 @@ const Listverified = () => {
                 className="w-full flex flex-col justify-between items-center"
               >
                 <input
-                  onChange={(e) => setNumber(e.target.value)}
-                  type="number"
-                  placeholder="Loyiha id raqami:"
-                  value={number}
+                  onChange={(e) => setLogin(e.target.value)}
+                  type="Login"
+                  placeholder="Login:"
+                  value={login}
                   className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
                 />
                 <input
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  placeholder="Loyiha nomi:"
-                  value={title}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  placeholder="Parol kiriting:"
+                  value={password}
+                  className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
+                />
+                <input
+                  onChange={(e) => setRePassword(e.target.value)}
+                  type="password"
+                  placeholder="Parolni qayta kiriting:"
+                  value={rePassword}
                   className="my-1 outline-none border border-[#433aeb] py-2 px-6 rounded-md text-[14px]"
                 />
                 <input
@@ -196,7 +203,12 @@ const Listverified = () => {
                 />
                 {error ? (
                   <p className="text-[14px] font-normal text-red-600">
-                    Ushbu id lik loyiha avval ro'yxatdan o'tgan!
+                    Parol mos kelmadi!
+                  </p>
+                ) : null}
+                {error2 ? (
+                  <p className="text-[14px] font-normal text-red-600">
+                    Ushbu login avval ro'yxatdan o'tgan
                   </p>
                 ) : null}
               </form>
@@ -204,8 +216,8 @@ const Listverified = () => {
           </div>
         </div>
       )}
-      {askModal ? (
-        <div className="absolute w-full h-full top-0 left-0 bg-transparent">
+      {/* {askModal ? (
+          <div className="absolute w-full h-full top-0 left-0 bg-transparent">
           <div
             // onClick={closeModal}
             className="fixed top-0 right-0 w-full h-full bg-[rgba(0,0,0,0.4)]"
@@ -221,9 +233,7 @@ const Listverified = () => {
                 </span>
               </button>
             </div>
-            <p className="text-[20px] font-medium mt-10 text-center">
-              Haqiqatdan ham loyihani o'chirmoqchimisiz ?
-            </p>
+            <p className="text-[20px] font-medium mt-10 text-center">Haqiqatdan ham loyihani o'chirmoqchimisiz ?</p>
             <div className="mt-6">
               <form
                 onSubmit={deleteProject}
@@ -234,19 +244,16 @@ const Listverified = () => {
                   value="Ha"
                   className="bg-[#433aeb] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8"
                 />
-                <button
-                  onClick={closeAskModal}
-                  className="bg-[#d32b2b] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8"
-                >
+                <button  onClick={closeAskModal} className="bg-[#d32b2b] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8" >
                   Yo'q
                 </button>
               </form>
             </div>
           </div>
         </div>
-      ) : null}
+      ): null} */}
     </>
   );
 };
 
-export default Listverified;
+export default ListAdmin;

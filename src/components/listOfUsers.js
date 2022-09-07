@@ -84,7 +84,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
     axios
       .get(`${baseURL}/v1/users/new_users`)
       .then((response) => {
-        console.log("new users", response);
+        // console.log("new users", response);
         // console.log(response.data.object);
         dispatch(get_all_user(response.data));
       })
@@ -95,8 +95,6 @@ const ListOfUsers = ({ setModal, setLoader }) => {
 
   const reject = (event) => {
     event.preventDefault();
-    // let data = {}
-
     axios
       .post(`${baseURL}/v1/users/user_not_verified/${phone}`)
       .then((response) => {

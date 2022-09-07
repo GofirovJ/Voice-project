@@ -46,3 +46,9 @@ export const notify = (notify) => {
       notify,
    }; 
 };
+export const get_admins = (admins) => {
+   return {
+      type: "GET_ADMINS",
+      admins,
+   }; 
+};

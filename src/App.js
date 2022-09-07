@@ -5,6 +5,7 @@ import PaidUsers from './paid/paid';
 import VerifiedUsers from './verified/verified';
 import Projects from './projects/projects';
 import Login from './login/login';
+import Admin from './admin/admin';
 
 function App() {
   const [acces, setAccess] = useState(false)
@@ -16,6 +17,7 @@ function App() {
         <Route path = '/verified_users' element={<VerifiedUsers />} />  
         <Route path = '/paid_users' element={<PaidUsers />} />    
         <Route path = '/projects' element={<Projects />} />    
+        <Route path = '/admin' element={<Admin />} />    
       </Routes>
     );
   }
