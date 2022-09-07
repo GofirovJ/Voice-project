@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_all_user,
@@ -15,8 +15,8 @@ const ListOfUsers = ({ setModal, setLoader }) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [askModal, setAskModal] = useState(false);
-  const [phone, setPhone]=useState("")
-  
+  const [phone, setPhone] = useState("");
+
   const getNewUsers = () => {
     const btn = document.querySelector(".newUsers");
     btn.classList.add("btn_animation");
@@ -109,12 +109,12 @@ const ListOfUsers = ({ setModal, setLoader }) => {
     }, 200);
   };
   const openAskModal = (phoneNumber) => {
-    setAskModal(true)
-    setPhone(phoneNumber)
-  }
+    setAskModal(true);
+    setPhone(phoneNumber);
+  };
   const closeAskModal = () => {
-    setAskModal(false)
-  }
+    setAskModal(false);
+  };
 
   const copyElement = (phone, id) => {
     let element = document.getElementById(id);
@@ -132,22 +132,23 @@ const ListOfUsers = ({ setModal, setLoader }) => {
           <h1 className="text-[30px] text-[#2c384a] font-bold leading-[40px] py-2">
             Yangi foydalanuvchilar
           </h1>
-          <div className="flex justify-end items-center">
-            <p className="text-[24px] font-medium text-[#2c384a] mx-2">Yangilash</p>
-            <button
-              onClick={getNewUsers}
-              className="newUsers cursor-pointer mt-2"
+          <button
+            onClick={getNewUsers}
+            className="flex justify-end items-center cursor-pointer "
+          >
+            <span className="text-[24px] font-medium text-[#2c384a] mx-2">
+              Yangilash
+            </span>
+            <svg
+              className="newUsers mt-2"
+              width="30px"
+              height="30px"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                width="30px"
-                height="30px"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M19.146 4.854l-1.489 1.489A8 8 0 1 0 12 20a8.094 8.094 0 0 0 7.371-4.886 1 1 0 1 0-1.842-.779A6.071 6.071 0 0 1 12 18a6 6 0 1 1 4.243-10.243l-1.39 1.39a.5.5 0 0 0 .354.854H19.5A.5.5 0 0 0 20 9.5V5.207a.5.5 0 0 0-.854-.353z" />
-              </svg>
-            </button>
-          </div>
+              <path d="M19.146 4.854l-1.489 1.489A8 8 0 1 0 12 20a8.094 8.094 0 0 0 7.371-4.886 1 1 0 1 0-1.842-.779A6.071 6.071 0 0 1 12 18a6 6 0 1 1 4.243-10.243l-1.39 1.39a.5.5 0 0 0 .354.854H19.5A.5.5 0 0 0 20 9.5V5.207a.5.5 0 0 0-.854-.353z" />
+            </svg>
+          </button>
         </div>
         <ul className="text-[18px] flex justify-between items-center bg-[#433aeb] text-white font-medium tracking-wider rounded-md p-6 my-4 ">
           <li className="w-[5%]">No</li>
@@ -214,7 +215,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
-                    >
+                  >
                     <path
                       d="M16.5163 8.93451L11.0597 14.7023L8.0959 11.8984"
                       stroke="black"
@@ -233,7 +234,7 @@ const ListOfUsers = ({ setModal, setLoader }) => {
         </div>
       </div>
       {askModal ? (
-          <div className="absolute w-full h-full top-0 left-0 bg-transparent">
+        <div className="absolute w-full h-full top-0 left-0 bg-transparent">
           <div
             // onClick={closeModal}
             className="fixed top-0 right-0 w-full h-full bg-[rgba(0,0,0,0.4)]"
@@ -249,7 +250,9 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                 </span>
               </button>
             </div>
-            <p className="text-[20px] font-medium mt-10 text-center">Haqiqatdan ham foydalanuvchi qatnashganmi?</p>
+            <p className="text-[20px] font-medium mt-10 text-center">
+              Haqiqatdan ham foydalanuvchi qatnashganmi?
+            </p>
             <div className="mt-6">
               <form
                 onSubmit={reject}
@@ -260,14 +263,17 @@ const ListOfUsers = ({ setModal, setLoader }) => {
                   value="Ha"
                   className="bg-[#433aeb] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8"
                 />
-                <button  onClick={closeAskModal} className="bg-[#d32b2b] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8" >
+                <button
+                  onClick={closeAskModal}
+                  className="bg-[#d32b2b] my-1  text-white cursor-pointer px-6 py-2 rounded-md mx-8"
+                >
                   Yo'q
                 </button>
               </form>
             </div>
           </div>
         </div>
-      ): null}
+      ) : null}
     </>
   );
 };

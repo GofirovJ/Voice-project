@@ -435,6 +435,28 @@ const ListAdmin = () => {
                 className="w-full flex flex-col justify-between items-center"
               >
                 <label
+                  htmlFor="passwordre"
+                  className="w-[40%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
+                >
+                  <input
+                    id="passwordre"
+                    className="repassword w-[90%] h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
+                    placeholder="Eski parolingizni kiriting:"
+                    type="password"
+                    value={checkPassword}
+                    onChange={(e) => {
+                      setCheckPassword(e.target.value);
+                    }}
+                  />
+
+                  <img
+                    onClick={showAgain}
+                    className="w-[20px] h-[20px] cursor-pointer mr-2"
+                    src={eye2 ? "./eye-hide.svg" : "./eye-show.svg"}
+                    alt="icon"
+                  />
+                </label>
+                <label
                   htmlFor="adminLoginEdit"
                   className="w-[40%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
                 >
@@ -442,7 +464,7 @@ const ListAdmin = () => {
                     id="adminLoginEdit"
                     onChange={(e) => setLogin(e.target.value)}
                     type="text"
-                    placeholder="Login:"
+                    placeholder="Yangi login:"
                     value={login}
                     className="w-full h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
                   />
@@ -469,28 +491,7 @@ const ListAdmin = () => {
                     alt="icon"
                   />
                 </label>
-                <label
-                  htmlFor="passwordre"
-                  className="w-[40%] flex items-center bg-white outline-none rounded-md border border-[#433aeb] my-1"
-                >
-                  <input
-                    id="passwordre"
-                    className="repassword w-[90%] h-full border-none outline-none rounded-md px-2 py-2 bg-white text-[14px]"
-                    placeholder="Parolingizni kiriting:"
-                    type="password"
-                    value={checkPassword}
-                    onChange={(e) => {
-                      setCheckPassword(e.target.value);
-                    }}
-                  />
 
-                  <img
-                    onClick={showAgain}
-                    className="w-[20px] h-[20px] cursor-pointer mr-2"
-                    src={eye2 ? "./eye-hide.svg" : "./eye-show.svg"}
-                    alt="icon"
-                  />
-                </label>
                 <input
                   type="submit"
                   value="O'zgartirish"
